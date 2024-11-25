@@ -2,6 +2,7 @@ package com.devsuperior.desafio_orm.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class Categoria {
     private Integer id;
 
     @OneToMany(mappedBy = "categoria")
-    private List<Atividade> atividades;
+    private List<Atividade> atividades = new ArrayList<>();
 
     @Column(name = "descricao", columnDefinition = "TEXT")
     private String descricao;
@@ -22,7 +23,7 @@ public class Categoria {
     public Categoria() {
     }
 
-    public Categoria(Integer id, List<Atividade> atividades, String descricao) {
+    public Categoria(Integer id, String descricao) {
         this.id = id;
         this.atividades = atividades;
         this.descricao = descricao;
