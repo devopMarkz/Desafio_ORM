@@ -6,6 +6,9 @@ import com.devsuperior.desafio_orm.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/categoria")
@@ -17,8 +20,11 @@ public class CategoriaController {
     @PostMapping
     public ResponseEntity<?> createCategoria(@RequestBody CreateCategoriaDto createCategoriaDto) {
         var categoria = categoriaService.createCategoria(createCategoriaDto);
-        if(categoria != null) return ResponseEntity.ok("Categoria de ID " + categoria.getId() + " criada!");
-        else return ResponseEntity.badRequest().body("Não foi possível criar a categoria.");
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(categoria.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(categoria);
     }
 
     @GetMapping("/{id}")
